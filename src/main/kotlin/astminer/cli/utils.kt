@@ -7,6 +7,7 @@ import astminer.parse.gumtree.java.GumTreeJavaParser
 import astminer.common.model.Node
 import astminer.common.model.Parser
 import astminer.parse.antlr.javascript.JavaScriptParser
+import astminer.parse.antlr.kotlin.KotlinParser
 
 fun getParser(
     extension: String,
@@ -26,6 +27,7 @@ fun getParser(
         "cpp" -> FuzzyCppParser()
         "py" -> PythonParser()
         "js" -> JavaScriptParser()
+        "kt" -> KotlinParser()
         else -> {
             throw UnsupportedOperationException("Unsupported extension $extension")
         }
