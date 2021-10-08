@@ -72,3 +72,18 @@ fun compressTree(root: AntlrNode): AntlrNode {
 
 
 fun decompressTypeLabel(typeLabel: String) = typeLabel.split("|")
+
+fun shortenNodes(root: AntlrNode): AntlrNode {
+    val parts = decompressTypeLabel(root.getTypeLabel())
+    var label = parts.first()
+    if (parts.size > 1) label += "/" + parts.last()
+    val children = root.getChildren().map { shortenNodes(it) }
+
+    val shortenedNode = AntlrNode(
+        label,
+        root.getParent(),
+        root.getToken()
+    )
+    shortenedNode.setChildren(children)
+    return shortenedNode
+}

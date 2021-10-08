@@ -5,9 +5,11 @@ import astminer.common.model.Node
 import astminer.common.model.ParseResult
 import astminer.common.preOrder
 import astminer.common.setTechnicalToken
+import astminer.common.splitToSubtokens
 import astminer.parse.antlr.AntlrNode
 import astminer.parse.antlr.java.JavaMethodSplitter
 import astminer.parse.antlr.javascript.JavaScriptMethodSplitter
+import astminer.parse.antlr.kotlin.KotlinMethodSplitter
 import astminer.parse.antlr.python.PythonMethodSplitter
 import astminer.parse.fuzzy.cpp.FuzzyMethodSplitter
 import astminer.parse.fuzzy.cpp.FuzzyNode
@@ -93,6 +95,10 @@ abstract class MethodLabelExtractor(
                 val methodSplitter = JavaScriptMethodSplitter()
                 methodSplitter.splitIntoMethods(root as AntlrNode)
             }
+            "kt" -> {
+                val methodSplitter = KotlinMethodSplitter()
+                methodSplitter.splitIntoMethods(root as AntlrNode)
+            }
             else -> throw UnsupportedOperationException("Unsupported extension $fileExtension")
         }.filter { methodInfo ->
             filterPredicates.all { predicate ->
@@ -140,6 +146,7 @@ class MethodNameExtractor(
             }
             methodNameNode.setTechnicalToken("METHOD_NAME")
         }
-        return methodName
+
+        return splitToSubtokens(methodName).joinToString ("|")
     }
 }
